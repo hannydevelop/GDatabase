@@ -1,9 +1,6 @@
-extern crate google_sheets4 as sheets4;
+use google_sheets4 as sheets4;
 
-use sheets4::{Sheets, oauth2, oauth2::ServiceAccountAuthenticator};
-use sheets4::api::ValueRange;
-use sheets4::{Result, Error};
-use std::default::Default;
+use sheets4::{api::ValueRange, Error, Sheets, oauth2, oauth2::ServiceAccountAuthenticator};
 
 #[tokio::main]
 async fn main() {
@@ -23,17 +20,20 @@ async fn main() {
 
     let hub = Sheets::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().enable_http2().build()), sa);
 
-    let req = ValueRange::default();
+    let req =ValueRange {
+        major_dimension: None,
+        range: None,
+        values: Some(vec![vec![
+            "hello".to_string(),
+            "world".to_string()
+        ]]),
+    };
 
     // You can configure optional parameters by calling the respective setters at will, and
     // execute the final call using `doit()`.
     // Values shown here are possibly random and not representative !
     let result = hub.spreadsheets().values_append(req, "1Wzp7fWqcgQNQsv7MxAj5wrPm7JrFstFP0RBSoAje8QI", "A1:D10")
-                 .value_input_option("no")
-                 .response_value_render_option("ipsum")
-                 .response_date_time_render_option("voluptua.")
-                 .insert_data_option("At")
-                 .include_values_in_response(false)
+                .value_input_option("USER_ENTERED")
                  .doit().await;
     
     match result {
