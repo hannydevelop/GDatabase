@@ -8,17 +8,12 @@ use hyper_rustls;
 async fn main() {
     let creds = oauth2::read_service_account_key("serviceaccount.json")
         .await
-        .unwrap();
+        .expect("Can't read credential, an error occurred");
+
     let sa = ServiceAccountAuthenticator::builder(creds)
         .build()
         .await
-        .unwrap();
-    let scopes = &["https://www.googleapis.com/auth/pubsub"];
-
-    let tok = sa.token(scopes).await.unwrap();
-    println!("token is: {:?}", tok);
-    let tok = sa.token(scopes).await.unwrap();
-    println!("cached token is {:?} and should be identical", tok);
+        .expect("There was an error, trying to build connection with authenticator");
 
     let hub = Sheets::new(hyper::Client::builder().build(hyper_rustls::HttpsConnectorBuilder::new().with_native_roots().https_or_http().enable_http1().enable_http2().build()), sa);
 

@@ -1,5 +1,5 @@
 [package]
-name = "GDatabase"
+name = "gdatabase"
 version = "0.1.0"
 edition = "2021"
 
@@ -7,8 +7,6 @@ edition = "2021"
 
 [dependencies]
 google-sheets4 = "*"
-serde = "^1.0"
-serde_json = "^1.0"
 tokio =  { version = "1.26.0", features = ["full"] }
 hyper = "0.14.24"
 hyper-rustls = "0.23.2"
