@@ -1,6 +1,8 @@
 use google_sheets4 as sheets4;
 
 use sheets4::{api::ValueRange, Error, Sheets, oauth2, oauth2::ServiceAccountAuthenticator};
+use hyper;
+use hyper_rustls;
 
 #[tokio::main]
 async fn main() {
